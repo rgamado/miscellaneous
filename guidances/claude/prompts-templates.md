@@ -451,3 +451,165 @@ services/subscription_service.py.
 All the tests we just wrote should pass.
 Use FastAPI, async SQLAlchemy, and the official stripe library.
 ```
+
+## GIT
+
+Claude writes decent commit messages.
+
+```text
+You: Add email validation to the registration form.
+     Once it's working and the tests pass, commit.
+
+Claude: [Implements validation, runs tests, commits]
+
+You: Now extract that validation logic into a separate module
+     so we can reuse it. Commit when you're done.
+
+Claude: [Refactors, tests, commits]
+```
+
+More verbose
+
+```text
+Show me the diff of what you've changed before committing.
+```
+
+**When you should review commit comments with claude:**
+
+* Changes involving design decisions Claude doesn’t fully understand 
+* Commits touching multiple subsystems for reasons that aren’t obvious from the code 
+* Anything going into a public repository with a wide audience
+
+```text
+Generate the commit message for the current changes but don't commit.
+I want to review it first.
+```
+
+- Atomic commits
+
+```text
+Create a branch called feature/rate-limiting, implement
+rate limiting on the API using Redis, and make atomic commits
+as you go.
+```
+
+- Complete feature
+
+```text
+Create a branch feature/user-export.
+Implement a GET /users/export endpoint that returns
+users in CSV format. Include:
+
+- Only active users
+- Fields: id, email, name, signup date
+- Correct Content-Disposition header to force download
+- Integration tests
+Commit after each logical piece.
+```
+
+After done:
+
+```text
+Give me a summary of the commits you've made on this branch
+and whether you think the work is complete.
+```
+
+- Merge
+
+```text
+We have a merge conflict in src/pricing.py.
+The HEAD branch added discount logic for premium users.
+The feature/promo-codes branch refactored the function to support
+promo codes. Resolve the conflict by combining both changes.
+```
+
+Or with context
+
+```text
+Here are the commits from each branch so you understand
+the context of the conflict:
+
+feature/pricing-tiers:
+
+- "feat: add premium user discount"
+- "feat: add enterprise tier with 20% discount"
+
+feature/promo-codes:
+
+- "feat: add promo code support"
+- "refactor: extract discount calculation logic"
+
+The conflict is in src/pricing.py. Resolve it.
+
+Here are the commits from each branch so you understand
+the context of the conflict:
+
+feature/pricing-tiers:
+
+- "feat: add premium user discount"
+- "feat: add enterprise tier with 20% discount"
+
+feature/promo-codes:
+
+- "feat: add promo code support"
+- "refactor: extract discount calculation logic"
+
+The conflict is in src/pricing.py. Resolve it.
+```
+
+- Stash
+
+```text
+I need to switch to main to do an urgent hotfix.
+Save the current work to stash with a descriptive message.
+```
+
+- Code Review
+
+```text
+Review all the changes on the current branch compared to main.
+Look for:
+- Obvious security issues
+- Edge cases we're not handling
+- Inconsistencies with the style of the rest of the codebase
+- Missing tests for new logic
+```
+
+- Review PR
+
+```text
+Review the changes in this PR. It's a cache implementation
+for the most frequent database queries.
+Pay special attention to whether cache invalidation is well
+thought out for concurrent write scenarios.
+```
+
+- Rollback commit
+
+```text
+The last commit broke the integration tests.
+Undo the commit but keep the changes in the working directory
+so I can fix them.
+```
+
+Or
+
+```text
+Commit a3f8c12 introduced a regression in the payments module.
+I need to revert it without losing subsequent commits.
+```
+
+- Rollback for file
+
+```text
+I need to restore src/models/payment.py to the state it was in
+at commit b7e2d45, without touching the rest of the files.
+```
+
+- Disater recovery
+
+```text
+We just merged feature/new-auth and everything is broken.
+I need to get back to the exact state before the merge.
+What's the safest way to do it?
+```
